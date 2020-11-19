@@ -1,9 +1,22 @@
-import { ObjectType, Field, Int, ID } from 'type-graphql';
+import { Field, ID, InputType, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class UserType {
-  @Field(() => ID)
-  readonly id?: string;
-  @Field()
-  readonly username: string;
+    @Field(() => ID)
+    readonly id?: string;
+
+    @Field()
+    readonly username: string;
+
+    @Field()
+    readonly password: string;
+}
+
+@InputType()
+export class CreateUserInput {
+    @Field()
+    readonly username: number;
+
+    @Field()
+    readonly passowrd: string;
 }
