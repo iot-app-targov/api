@@ -2,31 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { CreateUserInput, UserType } from './dto/user';
-import { User } from './schemas/user.entity';
+import { CreateUserInput, UserType } from './graphql/user';
+import { User, UserDocument } from './schemas/user.entity';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel('User') private itemModel: Model<User>) {}
+    constructor(@InjectModel('User') private userModel: Model<UserDocument>) { }
 
     async create(createUserDto: CreateUserInput): Promise<UserType> {
-        const createdItem = new this.itemModel(createUserDto);
+        const createdItem = new this.userModel(createUserDto);
         return await createdItem.save();
-      }
-    
-      async findAll(): Promise<UserType[]> {
-        return await this.itemModel.find().exec();
-      }
-    
-      async findOne(id: string): Promise<UserType> {
-        return await this.itemModel.findOne({ _id: id });
-      }
-    
-      async delete(id: string): Promise<UserType> {
-        return await this.itemModel.findByIdAndRemove(id);
-      }
-    
-      async update(id: string, item: User): Promise<UserType> {
-        return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
-      }
+    }
+
+    async findAll(): Promise<UserType[]> {
+        return await this.userModel.find().exec();
+    }
+
+    async findOne(id: string): Promise<UserType> {
+        return await this.userModel.findOne({ _id: id });
+    }
+
+    async delete(id: string): Promise<UserType> {
+        return await this.userModel.findByIdAndRemove(id);
+    }
+
+    async update(id: string, item: User): Promise<UserType> {
+        return await this.userModel.findByIdAndUpdate(id, item, { new: true });
+    }
 }

@@ -1,13 +1,24 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { BeforeInsert } from 'typeorm/decorator/listeners/BeforeInsert';
+import { hash }from 'bcrypt';
 
-export const UserSchema = new mongoose.Schema({
-    id: String,
-    username: String,
-    password: String,
-});
+export type UserDocument = User & Document;
 
-export interface User extends Document {
-    readonly id: string;
-    readonly username: number;
-    readonly password: string;
+@Schema()
+export class User {
+    @Prop({ type: Types.ObjectId })
+    id: string;
+
+    @Prop()
+    username: string;
+
+    @Prop()
+    password: string;
+
+    @BeforeInsert()  async hashPassword() {
+        this.password = await hash(this.password, 10);  
+    }
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
