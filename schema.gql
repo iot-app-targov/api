@@ -18,6 +18,6 @@ type Mutation {
 }
 
 input CreateUserInput {
-  username: Float!
-  passowrd: String!
+  username: String!
+  password: String!
 }
