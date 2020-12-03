@@ -5,9 +5,7 @@ import { UserService } from './user.service';
 
 @Resolver('User')
 export class UserResolver {
-    constructor(
-        private readonly userService: UserService,
-    ) { }
+    constructor(private readonly userService: UserService) {}
 
     @Query(() => [UserType])
     async users() {
@@ -15,12 +13,12 @@ export class UserResolver {
     }
 
     @Mutation(() => UserType)
-    async createUser(@Args('input') input: CreateUserInput) {
+    public async createUser(@Args('input') input: CreateUserInput) {
         return this.userService.create(input);
     }
 
     @Mutation(() => UserType)
-    async deleteUser(@Args('id') id: string) {
+    public async deleteUser(@Args('id') id: string) {
         return this.userService.delete(id);
     }
 }

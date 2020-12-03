@@ -7,10 +7,11 @@ import { User, UserDocument } from './schemas/user.entity';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel('User') private userModel: Model<UserDocument>) { }
+    constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
     async create(createUserDto: CreateUserInput): Promise<UserType> {
         const createdItem = new this.userModel(createUserDto);
+        console.log(createUserDto, createdItem);
         return await createdItem.save();
     }
 
@@ -20,6 +21,10 @@ export class UserService {
 
     async findOne(id: string): Promise<UserType> {
         return await this.userModel.findOne({ _id: id });
+    }
+
+    async findOneByUsername(username: string): Promise<UserType> {
+        return await this.userModel.findOne({ username }).lean();
     }
 
     async delete(id: string): Promise<UserType> {
